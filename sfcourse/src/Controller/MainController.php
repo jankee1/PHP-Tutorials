@@ -18,13 +18,17 @@ class MainController extends AbstractController
         //     'message' => 'Welcome to your new controller!',
         //     'path' => 'src/Controller/MainController.php',
         // ]);
-        return new Response('<h1>Welcome<h1>');
+        // return new Response('<h1>Welcome<h1>');
+        return $this->render('home/index.html.twig');
     }
     /**
      * @Route("/custom/{name?}", name="custom")
      */
     public function custom(Request $request) {
         $name = $request->get('name');
-        return new Response('<h1>Welcome ' . $name . '</h1>');
+
+        return $this->render('home/custom.html.twig',[
+            'name' => $name
+        ]);
     }
 }
