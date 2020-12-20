@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     uploads_dir: '%kernel.project_dir%/public/uploads/'
+    admin_email: 'admin@admin.com'
 
 services:
     # default configuration for services in *this* file
@@ -27,6 +28,10 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    App\Services\Notification:
+        arguments:
+                $email: '%admin_email%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
