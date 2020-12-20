@@ -2,5 +2,7 @@
 
 {% block body %}
     <h1>{{ post.title }}</h1>
+    <en>{{ post.category }}</en>
+    <hr>
     <img src="{{ '/uploads/' ~ post.image }}" alt="">
 {% endblock %}
