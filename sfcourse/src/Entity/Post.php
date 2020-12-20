@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
+// use Symfony\Component\Validator\Constraint as Assert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,6 +25,11 @@ class Post
      */
     private $title;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $image;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -37,6 +43,18 @@ class Post
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): self
+    {
+        $this->image = $image;
 
         return $this;
     }

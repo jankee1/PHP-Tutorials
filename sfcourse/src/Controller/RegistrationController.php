@@ -16,24 +16,27 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="register")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $userPasswordEncoder
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request,UserPasswordEncoderInterface $userPasswordEncoder): Response
     {
-
         $form = $this->createFormBuilder()
-        ->add('username')
-        ->add('password', RepeatedType::class, [
-            'type' =>PasswordType::class,
-            'required'=> true,
-            'first_options' => ['label' => 'Password'],
-            'second_options' => ['label' => 'Repeat Password']
-        ])
-        ->add('register', SubmitType::class, [
-            'attr' => [
-                'class' => 'btn btn-success float-right'
-            ]
-        ])
-        ->getForm();
+            ->add('username')
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'required' => true,
+                'first_options' => ['label' => 'Password'],
+                'second_options' => ['label' => 'Confirm Password']
+            ])
+            ->add('register', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-success float-right'
+                ]
+            ])
+            ->getForm()
+        ;
 
         $form->handleRequest($request);
 
@@ -43,15 +46,20 @@ class RegistrationController extends AbstractController
             $user = new User();
             $user->setUsername($data['username']);
             $user->setPassword(
-                $passwordEncoder->encodePassword($user, $data['password'])
+                $userPasswordEncoder->encodePassword($user, $data['password'])
             );
 
-            $em = $this->getDoctrine()->getManager();
+            $en = $this->getDoctrine()->getManager();
 
-            $em->persist($user);
-            $em->flush();
+            $en->persist($user);
+
+            $en->flush();
+
+            return $this->redirect($this->generateUrl('app_login'));
         }
 
-        return $this->redirect($this->generateUrl('app_login'));
+        return $this->render('registration/index.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }
