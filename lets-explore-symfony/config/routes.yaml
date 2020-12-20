@@ -1,8 +1,8 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-# hello_page:
-#   path: /hehe/
-#   controller: Symfony/Boundle/FrameworkBoundle/Controller/TemplateController::templateAction
-#   defaults:
-#     template: 'hello_page.html.twig'
+hello_page:
+  path: /
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+  defaults: 
+    template: 'hello_page.html.twig'
