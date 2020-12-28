@@ -11,13 +11,8 @@ class WelcomeController extends AbstractController
     /**
      * @Route("/", name="welcome")
      */
-    public function index()
+    public function index(): Response
     {
-        return $this->render('welcome/index.html.twig', [
-            'controller_name' => 'WelcomeController',
-        ]);
-        // return new Response('<html><body>hello</body></html>', Response::HTTP_OK);
-
-        //return $this->render('welcome/index.html.twig');
+        return $this->render('welcome/index.html.twig');
     }
 }

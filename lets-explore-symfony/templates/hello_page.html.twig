@@ -1,1 +1,7 @@
-hello from twig
+{% extends 'base.html.twig' %}
+
+{% block title %}Main Title{% endblock %}
+
+{% block main %}
+    <h1>Hello {{ app.request.query.get('name') | default('Jan') }}</h1>
+{% endblock %}
