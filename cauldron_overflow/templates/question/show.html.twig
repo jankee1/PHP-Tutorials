@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1> {{  question }} </h1>
+
+<div>
+    Answers will be shown below ({{ answers | length }})
+</div>
+
+<div>
+    <ul>
+        {% for answer in answers %}
+            <li> {{ answer }} </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
