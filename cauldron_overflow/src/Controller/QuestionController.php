@@ -25,6 +25,8 @@ class QuestionController extends AbstractController
             'Answer no 3',
         ];
 
+        dump($this);
+
         return $this->render('question/show.html.twig', [
             'question' => sprintf("how to tie shoes %s !", $slug),
             'answers' => $answers
