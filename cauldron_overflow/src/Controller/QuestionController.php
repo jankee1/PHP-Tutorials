@@ -8,13 +8,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class QuestionController extends AbstractController
 {    
-    #[Route('/', name:'homepage')]
+    #[Route('/', name:'app_homepage')]
     function homepage(): Response
     {
         return $this->Render('question/homepage.html.twig');
     }
 
-    #[Route('/questions/{slug}', name:'questions')]
+    #[Route('/question/{slug}', name:'app_question_show')]
     function show($slug): Response
     {
 
