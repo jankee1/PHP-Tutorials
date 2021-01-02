@@ -9,15 +9,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CommentController extends AbstractController
 {
-    #[Route('/comment/{id}/vote/{direction}', name: 'app_comment')]
-    public function commentVote($id, $direction): Response
+    #[Route('/comments/{id}/vote/{direction}', name: 'app_comment')]
+    public function commentVote($id, $direction)
     {
         if($direction === 'up') 
             $currentVoteCount = rand(7,100);
         else
             $currentVoteCount = rand(0,5);
 
-        return new JsonResponse([
+        return $this->json([
             'votes' => $currentVoteCount
         ]);
     }
