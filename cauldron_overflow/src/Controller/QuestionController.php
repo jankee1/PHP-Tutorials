@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
 class QuestionController extends AbstractController
@@ -19,7 +20,7 @@ class QuestionController extends AbstractController
     }
 
     #[Route('/question/{slug}', name:'app_question_show')]
-    function show($slug): Response
+    function show($slug, CacheInterface $cache): Response
     {
 
         $answers = [
@@ -28,11 +29,15 @@ class QuestionController extends AbstractController
             'Answer no 3',
         ];
 
-        dump($this);
+        $questionText = "I've been turned into a cat, any thoughts on how to turn back? While I'm adorable, I don't really care for cat food.";
+
+        
+
 
         return $this->render('question/show.html.twig', [
             'question' => sprintf("how to tie shoes %s !", $slug),
-            'answers' => $answers,
+            'questionText' => $questionText,
+            'answers' => $answers
         ]);
 
         // return new Response(sprintf(
