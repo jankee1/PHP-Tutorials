@@ -72,7 +72,7 @@ class ConversationRepository extends ServiceEntityRepository
       return $qb->getQuery()->getResult();
     }
 
-    public function checkIfUserIsParticipant(int $userId, int $conversationId)
+    public function checkIfUserIsParticipant(int $conversationId, int $userId)
     {
       $qb = $this->createQueryBuilder('c');
       $qb
