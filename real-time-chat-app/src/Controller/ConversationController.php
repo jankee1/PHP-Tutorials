@@ -27,7 +27,7 @@ class ConversationController extends AbstractController
         $this->conversationRepository = $conversationRepository;
 
     }
-    #[Route('/{id}', name: 'getConversations')]
+    #[Route('/', name: 'newConversations', methods: ["POST"])]
     public function index(Request $request, int $id): Response
     {
         $otherUser = $request->get('otherUser', 0);
@@ -77,4 +77,13 @@ class ConversationController extends AbstractController
           'id' => $conversation->getId()
         ], Response::HTTP_CREATED, [], []);
     }
+
+    #[Route('/', name: 'getConversations', methods: ["GET"])]
+    public function getConversation()
+    {
+      $conversations = $this->conversationRepository->findConversationByUser($this->getUser()->getId());
+
+      return $this->json($conversations);
+    }
+
 }
