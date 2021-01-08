@@ -19,6 +19,17 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
+    public function findMessageByConversationId(int $conversationId)
+    {
+      $qb = $this->createQueryBuilder('m');
+      $qb
+        ->where('m.conversation = :conversationId')
+        ->setParameter('conversationId', $conversationId)
+      ;
+
+      return $qb->getQuery()->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Message[] Returns an array of Message objects
     //  */

@@ -36,6 +36,8 @@ class Message
      */
     private $conversation;
 
+    private $mine;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -73,6 +75,19 @@ class Message
     public function setConversation(?Conversation $conversation): self
     {
         $this->conversation = $conversation;
+
+        return $this;
+    }
+
+
+    public function getMine()
+    {
+        return $this->mine;
+    }
+
+    public function setMine($mine)
+    {
+        $this->mine = $mine;
 
         return $this;
     }

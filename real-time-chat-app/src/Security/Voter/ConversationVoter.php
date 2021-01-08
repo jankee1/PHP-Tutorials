@@ -20,13 +20,12 @@ class ConversationVoter extends Voter
       return $attribute == self::VIEW && $subject instanceof Conversation;
   }
 
-  protected function voteOnAttribute(string $attribute, $subject, TokenInterface $tokenInterface)
+  protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token)
   {
     $result = $this->conversationRepository->checkIfUserIsParticipant(
       $subject->getId(),
-      $tokenInterface->getUser()->GetId()
+      $token->getUser()->GetId()
     );
-
-    dd($result);
+    return !!$result;
   }
 }
