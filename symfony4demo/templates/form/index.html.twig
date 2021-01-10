@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FormController!{% endblock %}
+
+{% block body %}
+  {{ form_start(post_form, {'attr': {'id':'custom_post_form', 'class':'some_class'}}) }}
+
+  {{ form_end(post_form) }}
+{% endblock %}

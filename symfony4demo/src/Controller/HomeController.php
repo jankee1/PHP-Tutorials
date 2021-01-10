@@ -37,8 +37,8 @@ class HomeController extends AbstractController
       ];
 
       $post = new Post();
-      $post->setTitle("this is title: overseas media");
-      $post->setDescription("this is description: overseas media");
+      // $post->setTitle("this is title: overseas media");
+      // $post->setDescription("this is description: overseas media");
 
       $em = $this->getDoctrine()->getManager();
 
