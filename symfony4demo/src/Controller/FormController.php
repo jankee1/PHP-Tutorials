@@ -31,8 +31,8 @@ class FormController extends AbstractController
         {
           // $em->persist($post);
         }
-        $em->remove($post);
-        $em->flush();
+        // $em->remove($post);
+        // $em->flush();
 
         return $this->render('form/index.html.twig', [
             'post_form' => $form->createView()
