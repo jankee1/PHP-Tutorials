@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PostType extends AbstractType
 {
@@ -25,6 +26,9 @@ class PostType extends AbstractType
               'attr' => [
                 'placeholder'=> 'Enter the Description here',
               ]
+            ])
+            ->add('category', EntityType::class, [
+              'class' => 'App\Entity\Category'
             ])
             ->add('save', SubmitType::class, [
               'attr' => [
