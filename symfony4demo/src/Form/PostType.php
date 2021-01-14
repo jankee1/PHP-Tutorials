@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class PostType extends AbstractType
@@ -29,6 +30,10 @@ class PostType extends AbstractType
             ])
             ->add('category', EntityType::class, [
               'class' => 'App\Entity\Category'
+            ])
+            ->add('my_file',FileType::class, [
+              'mapped' => false,
+              'label' => 'Please upload a file'
             ])
             ->add('save', SubmitType::class, [
               'attr' => [

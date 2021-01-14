@@ -55,6 +55,15 @@ class HomeController extends AbstractController
 
       if($form->isSubmitted())
       {
+        $file = $request->files->get('post')['my_file'];
+        $uploads_directory = $this->getParameter('uploads_directory');
+        $filename = md5(uniqid()) . '.' . $file->guessExtension();
+        $file->move(
+          $uploads_directory,
+          $filename
+        );
+
+        // dd($file);
         $em = $this->getDoctrine()->getManager();
         $em->persist($post);
         $em->flush();
