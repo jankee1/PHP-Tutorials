@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Services\Fetcher;
+use App\Services\Paginator;
 
 
 #[Route('/home', name: 'home.')]
@@ -19,10 +21,11 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
+
     }
 
     #[Route('/newpost', name: 'new_post')]
-    public function newpost(Request $request)
+    public function newpost(Request $request, Fetcher $fetcher)
     {
       // $name = $request->get('name');
       //
@@ -74,7 +77,8 @@ class HomeController extends AbstractController
           // 'person' => $person,
           // 'form' => $form->createView(),
           // 'post' => $retreivedPost
-          'post_form' => $form->createView()
+          'post_form' => $form->createView(),
+          // 'getURL' => $fetcher->get('https://coinmarketcap.com/v2/listing/')  different url has to be provided in order to the response to be fetched
       ]);
     }
 
