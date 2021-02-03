@@ -19,8 +19,14 @@ class DefaultController extends AbstractController
         // return new Response("Hello $name");
 
         // return new RedirectResponse('http://stackoverflow.com');
+        // return $this->redirectToRoute('default2');
 
-        return $this->redirectToRoute('default2');
+        $users = ['adam', 'robert', 'john', 'susan'];
+
+        return $this->render('default/index.html.twig', [
+          'controller_name' => 'DefaultController',
+          'users' => $users
+        ]);
     }
     #[Route('/default2/', name: 'default2')]
     public function index2()
