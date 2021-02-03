@@ -6,11 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\User;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/default/{name?}', name: 'default')]
-    public function index($name)
+    #[Route('/', name: 'default')]
+    public function index()
     {
         // return $this->render('default/index.html.twig', [
         //     'controller_name' => 'DefaultController',
@@ -20,8 +21,8 @@ class DefaultController extends AbstractController
 
         // return new RedirectResponse('http://stackoverflow.com');
         // return $this->redirectToRoute('default2');
+        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
-        $users = ['adam', 'robert', 'john', 'susan'];
 
         return $this->render('default/index.html.twig', [
           'controller_name' => 'DefaultController',
