@@ -32,6 +32,15 @@ class DefaultController extends AbstractController
         //
         // shuffle($gifts);
 
+        $this->addflash(
+          'notice',
+          'Your changes were saved'
+        );
+        $this->addflash(
+          'warning',
+          'This is warning'
+        );
+
         return $this->render('default/index.html.twig', [
           'controller_name' => 'DefaultController',
           'users' => $users,
@@ -60,15 +69,4 @@ class DefaultController extends AbstractController
       return new Response('Optional parameters in url and requirenents for parameters');
     }
 
-    /**
-    * @Route({
-    *    "nl": '/over-ons',
-    *    'en': '/about-us'
-    *  }, name="about-us")
-    *
-    */
-    public function aboutus()
-    {
-      return new Response('about us route');
-    }
 }

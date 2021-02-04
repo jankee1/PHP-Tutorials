@@ -10,17 +10,25 @@
 
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/opt/lampp/htdocs/PHP-Tutorials/Symfony_4_and_5-Todo_list/src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/opt/lampp/htdocs/PHP-Tutorials/Symfony_4_and_5-Todo_list/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
-    </ul>
-
     <ul>
       {% for user in users %}
         <li> {{ user.name }} you won {{ random_gift[loop.index0] }}</li>
       {% endfor %}
     </ul>
+
+
+    {% for message in app.flashes('notice') %}
+      <div class="flash-notice">
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{label}}">
+              {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 </div>
 {% endblock %}
