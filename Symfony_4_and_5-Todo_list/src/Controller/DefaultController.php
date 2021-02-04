@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
 use App\Services\GiftsService;
 
@@ -40,6 +41,20 @@ class DefaultController extends AbstractController
           'warning',
           'This is warning'
         );
+
+        // $cookie = new Cookie(
+        //   'my_cookie',
+        //   'cookie value',
+        //   time() + (2 * 365 * 24 * 60 * 60)
+        // );
+        //
+        // $res = new Response();
+        // $res->headers->setCookie($cookie);
+        // $res->send();
+
+        $res = new Response();
+        $res->headers->clearCookie('my_cookie');
+        $res->send();
 
         return $this->render('default/index.html.twig', [
           'controller_name' => 'DefaultController',
