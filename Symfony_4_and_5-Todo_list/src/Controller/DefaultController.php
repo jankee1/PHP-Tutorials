@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
 use App\Services\GiftsService;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class DefaultController extends AbstractController
 {
@@ -18,14 +20,12 @@ class DefaultController extends AbstractController
     //     $giftsservice->gifts = ['a', 'b', 'c', 'd'];
     // }
     #[Route('/', name: 'default')]
-    public function index(GiftsService $giftsservice)
+    public function index(GiftsService $giftsservice, Request $request, SessionInterface $session)
     {
         // return $this->render('default/index.html.twig', [
         //     'controller_name' => 'DefaultController',
         // ]);
-
         // return new Response("Hello $name");
-
         // return new RedirectResponse('http://stackoverflow.com');
         // return $this->redirectToRoute('default2');
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
@@ -51,10 +51,16 @@ class DefaultController extends AbstractController
         // $res = new Response();
         // $res->headers->setCookie($cookie);
         // $res->send();
+        // $res = new Response();
+        // $res->headers->clearCookie('my_cookie');
+        // $res->send();
+        // echo $request->cookies->get('PHPSESSID');
+        $session->set('name', 'session value');
+        // $session->remove('name');
+        $session->clear();
+        if($session->has('name'))
+          exit($session->get('name'));
 
-        $res = new Response();
-        $res->headers->clearCookie('my_cookie');
-        $res->send();
 
         return $this->render('default/index.html.twig', [
           'controller_name' => 'DefaultController',
@@ -62,6 +68,8 @@ class DefaultController extends AbstractController
           'random_gift' => $giftsservice->gifts
         ]);
     }
+
+
     // #[Route('/default2/', name: 'default2')]
     // public function index2()
     // {
