@@ -38,9 +38,37 @@ class DefaultController extends AbstractController
           'random_gift' => $giftsservice->gifts
         ]);
     }
-    #[Route('/default2/', name: 'default2')]
-    public function index2()
+    // #[Route('/default2/', name: 'default2')]
+    // public function index2()
+    // {
+    //     return new Response('hello');
+    // }
+
+    #[Route('/blog/{page?}', name: 'blog_lsit', requirements: ['page'=> '\d+'])]
+    public function blog()
     {
-        return new Response('hello');
+      return new Response('Optional parameters in url and requirenents for parameters');
+    }
+
+    #[Route(
+    '/articles/{_locale}/{year}/{slug}/{category}',
+    defaults: ['category' => 'computers'],
+    requirements: ['_locale'=> 'en|fr', 'category' => 'computers|tv', 'year' => '\d+'])
+    ]
+    public function articles()
+    {
+      return new Response('Optional parameters in url and requirenents for parameters');
+    }
+
+    /**
+    * @Route({
+    *    "nl": '/over-ons',
+    *    'en': '/about-us'
+    *  }, name="about-us")
+    *
+    */
+    public function aboutus()
+    {
+      return new Response('about us route');
     }
 }
