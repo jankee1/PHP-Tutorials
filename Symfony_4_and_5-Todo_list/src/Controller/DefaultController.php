@@ -12,10 +12,10 @@ use App\Services\GiftsService;
 class DefaultController extends AbstractController
 {
 
-    public function __construct(GiftsService $giftsservice)
-    {
-        $giftsservice->gifts = ['a', 'b', 'c', 'd'];
-    }
+    // public function __construct(GiftsService $giftsservice)
+    // {
+    //     $giftsservice->gifts = ['a', 'b', 'c', 'd'];
+    // }
     #[Route('/', name: 'default')]
     public function index(GiftsService $giftsservice)
     {
