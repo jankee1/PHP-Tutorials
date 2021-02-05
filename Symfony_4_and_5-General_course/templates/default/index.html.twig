@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% set users = [{name: 'John'}, {name: 'Robert'}, {name: 'George'}, {name: 'Susan'},] %}
 
 {% block title %}Hello DefaultController!{% endblock %}
 
@@ -9,7 +10,7 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Hello {{ controller_name | upper}}! ✅</h1>
     <ul>
       {#
       {% for user in users %}
@@ -19,21 +20,29 @@
     </ul>
 
 
-{#
-{% for message in app.flashes('notice') %}
-  <div class="flash-notice">
-    {{ message }}
-  </div>
-{% endfor %}
-
-{% for label, messages in app.flashes %}
-    {% for message in messages %}
-        <div class="flash-{{label}}">
-          {{ message }}
-        </div>
+    {#
+    {% for message in app.flashes('notice') %}
+      <div class="flash-notice">
+        {{ message }}
+      </div>
     {% endfor %}
-{% endfor %}
-#}
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash-{{label}}">
+              {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+    #}
+
+    {% for user in users %}
+      {% if user.name == 'Susan' %}
+        <p> {{ user.name }} </p>
+      {% else %}
+        No user was found
+      {% endif %}
+    {% endfor %}
 
 
 </div>
