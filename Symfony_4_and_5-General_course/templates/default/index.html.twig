@@ -20,6 +20,21 @@
     </ul>
 
 
+{{ path('home') }} <br>
+{{ url('home') }} <br>
+{{ asset('images/logo.png') }} <br>
+{{ absolute_url(asset('images/logo.png')) }} <br>
+{{ ga_code }} <br>
+{{ app.user }} <br>
+{{ app.request.get('param') }} <br>
+{{ app.environment }} <br>
+ {# {{ dump(app.session) }} <br> #}
+
+{{ render(controller(
+  'App\\Controller\\DefaultController::mostPopularPosts',
+  { 'number': 4 }
+)) }}
+
     {#
     {% for message in app.flashes('notice') %}
       <div class="flash-notice">
@@ -34,7 +49,7 @@
             </div>
         {% endfor %}
     {% endfor %}
-    #}
+
 
     {% for user in users %}
       {% if user.name == 'Susan' %}
@@ -45,7 +60,7 @@
     {% endfor %}
 
     {{ include('includes/subview.html.twig', {'users': users}) }}
-{#
+
     {% block javascript %}
     {{ parent() }}
       <script type="text/javascript">
