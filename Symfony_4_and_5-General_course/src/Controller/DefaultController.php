@@ -85,11 +85,10 @@ class DefaultController extends AbstractController
     //     ]);
     // }
 
-    #[Route('/', name: 'default')]
+    #[Route('/home', name: 'home')]
     public function index(Request $request)
     {
         // $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-        //
         // exit($request->query->get('page', 'default'));
 
         return $this->render('default/index.html.twig', [
@@ -97,74 +96,83 @@ class DefaultController extends AbstractController
         ]);
     }
 
-    // #[Route('/default2/', name: 'default2')]
-    // public function index2()
-    // {
-    //     return new Response('hello');
-    // }
-
-    #[Route('/blog/{page?}', name: 'blog_lsit', requirements: ['page'=> '\d+'])]
-    public function blog()
+    public function mostPopularPosts($numer = 3)
     {
-      return new Response('Optional parameters in url and requirenents for parameters');
+      $posts = ['post1', 'post2', 'post3', 'post3'];
+
+      return $this->render('default/most_popular_posts.html.twig', [
+        'posts' => $posts
+      ]);
     }
 
-    #[Route(
-    '/articles/{_locale}/{year}/{slug}/{category}',
-    defaults: ['category' => 'computers'],
-    requirements: ['_locale'=> 'en|fr', 'category' => 'computers|tv', 'year' => '\d+'])
-    ]
-    public function articles()
-    {
-      return new Response('Optional parameters in url and requirenents for parameters');
-    }
-
-    #[Route('/generate-url/{param?}', name: 'generate_url')]
-    public function generate_url()
-    {
-      exit($this->generateUrl(
-        'generate_url',
-        ['param' => 10],
-        UrlGeneratorInterface::ABSOLUTE_URL
-      ));
-    }
-
-    // #[Route('/download/')]
-    // public function download()
-    // {
-    //   $path = $this->getParameter('download_directory');
-    //   return $this->file($path, 'file.pdf');
-    // }
-
-    #[Route('/redirect-test/')]
-    public function redirectTest()
-    {
-      return $this->redirectToRoute('route_to_redirect',[ 'param' => 10 ]);
-    }
-
-    #[Route('/url-to-redirect/{param?}', name: 'route_to_redirect')]
-    public function redirectTo()
-    {
-      exit('test redirection');
-    }
-
-    #[Route('/forwarding-to-controller')]
-    public function forwardingtocontroller()
-    {
-        $response = $this->forward(
-          'App\Controller\DefaultController::methodToForwardTo',
-          [
-            'param' => 1
-          ]
-        );
-
-        return $response;
-    }
-
-  #[Route('/url-to-forward-to/{param?}', name: 'route_to_forward_to')]
-  public function methodToForwardTo($param)
-  {
-    exit('Test controller forwarding - '. $param);
-  }
+  //   // #[Route('/default2/', name: 'default2')]
+  //   // public function index2()
+  //   // {
+  //   //     return new Response('hello');
+  //   // }
+  //
+  //   #[Route('/blog/{page?}', name: 'blog_lsit', requirements: ['page'=> '\d+'])]
+  //   public function blog()
+  //   {
+  //     return new Response('Optional parameters in url and requirenents for parameters');
+  //   }
+  //
+  //   #[Route(
+  //   '/articles/{_locale}/{year}/{slug}/{category}',
+  //   defaults: ['category' => 'computers'],
+  //   requirements: ['_locale'=> 'en|fr', 'category' => 'computers|tv', 'year' => '\d+'])
+  //   ]
+  //   public function articles()
+  //   {
+  //     return new Response('Optional parameters in url and requirenents for parameters');
+  //   }
+  //
+  //   #[Route('/generate-url/{param?}', name: 'generate_url')]
+  //   public function generate_url()
+  //   {
+  //     exit($this->generateUrl(
+  //       'generate_url',
+  //       ['param' => 10],
+  //       UrlGeneratorInterface::ABSOLUTE_URL
+  //     ));
+  //   }
+  //
+  //   // #[Route('/download/')]
+  //   // public function download()
+  //   // {
+  //   //   $path = $this->getParameter('download_directory');
+  //   //   return $this->file($path, 'file.pdf');
+  //   // }
+  //
+  //   #[Route('/redirect-test/')]
+  //   public function redirectTest()
+  //   {
+  //     return $this->redirectToRoute('route_to_redirect',[ 'param' => 10 ]);
+  //   }
+  //
+  //   #[Route('/url-to-redirect/{param?}', name: 'route_to_redirect')]
+  //   public function redirectTo()
+  //   {
+  //     exit('test redirection');
+  //   }
+  //
+  //   #[Route('/forwarding-to-controller')]
+  //   public function forwardingtocontroller()
+  //   {
+  //       $response = $this->forward(
+  //         'App\Controller\DefaultController::methodToForwardTo',
+  //         [
+  //           'param' => 1
+  //         ]
+  //       );
+  //
+  //       return $response;
+  //   }
+  //
+  // #[Route('/url-to-forward-to/{param?}', name: 'route_to_forward_to')]
+  // public function methodToForwardTo($param)
+  // {
+  //   exit('Test controller forwarding - '. $param);
+  // }
 
 }
