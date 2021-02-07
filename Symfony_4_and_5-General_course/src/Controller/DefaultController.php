@@ -20,7 +20,6 @@ class DefaultController extends AbstractController
     {
 
     }
-
     // public function __construct(GiftsService $giftsservice)
     // {
     //     $giftsservice->gifts = ['a', 'b', 'c', 'd'];
@@ -84,27 +83,24 @@ class DefaultController extends AbstractController
     //       'controller_name' => 'DefaultController',
     //     ]);
     // }
-
-    #[Route('/home', name: 'home')]
-    public function index(Request $request)
-    {
-        // $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-        // exit($request->query->get('page', 'default'));
-
-        return $this->render('default/index.html.twig', [
-          'controller_name' => 'DefaultController',
-        ]);
-    }
-
-    public function mostPopularPosts($numer = 3)
-    {
-      $posts = ['post1', 'post2', 'post3', 'post3'];
-
-      return $this->render('default/most_popular_posts.html.twig', [
-        'posts' => $posts
-      ]);
-    }
-
+    // #[Route('/home', name: 'home')]
+    // public function index(Request $request)
+    // {
+    //     // $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+    //     // exit($request->query->get('page', 'default'));
+    //
+    //     return $this->render('default/index.html.twig', [
+    //       'controller_name' => 'DefaultController',
+    //     ]);
+    // }
+    // public function mostPopularPosts($numer = 3)
+    // {
+    //   $posts = ['post1', 'post2', 'post3', 'post3'];
+    //
+    //   return $this->render('default/most_popular_posts.html.twig', [
+    //     'posts' => $posts
+    //   ]);
+    // }
   //   // #[Route('/default2/', name: 'default2')]
   //   // public function index2()
   //   // {
@@ -175,4 +171,49 @@ class DefaultController extends AbstractController
   //   exit('Test controller forwarding - '. $param);
   // }
 
+  #[Route('/home', name: 'home')]
+  public function index(Request $request)
+  {
+    // ADD
+      // $em = $this->getDoctrine()->getManager();
+      //
+      // $user = new User;
+      // $user->setName('Robert');
+      // $em->persist($user);
+      // $em->flush();
+      //
+      // dd($user->getId());
+
+    // FIND
+      // $repository = $this->getDoctrine()->getRepository(User::class);
+      // $user = $repository->find(1);
+      // $user = $repository->findOneBy(['name' => 'Robert', 'id' => 5]);
+      // $user = $repository->findBy(['name' => 'Robert'], ['id' => 'DESC']);
+      // $user = $repository->findAll();
+
+    // UPDATE
+      // $em = $this->getDoctrine()->getManager();
+      // $id = 1;
+      // $user = $em->getRepository(User::class)->find($id);
+      // if(!$user) {
+      //   throw $this->createNotFoundException(
+      //     'No user found under id ' . $id
+      //   );
+      // }
+      // $user->setName('nes user name');
+      // $em->flush();
+      
+    // DELETE
+      $em = $this->getDoctrine()->getManager();
+      $id = 2;
+      $user = $em->getRepository(User::class)->find($id);
+      $em->remove($user);
+      $em->flush();
+
+      dd($user);
+
+      return $this->render('default/index.html.twig', [
+        'controller_name' => 'DefaultController',
+      ]);
+  }
 }
