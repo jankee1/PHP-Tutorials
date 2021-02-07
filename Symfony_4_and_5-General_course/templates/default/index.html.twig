@@ -11,12 +11,12 @@
 
 <div class="example-wrapper">
     <h1>Hello {{ controller_name | upper}}! ✅</h1>
-    <ul>
-      {#
+    {#    <ul>
+
       {% for user in users %}
         <li> {{ user.name }} you won {{ random_gift[loop.index0] }}</li>
       {% endfor %}
-      #}
+
     </ul>
 
 
@@ -28,14 +28,14 @@
 {{ app.user }} <br>
 {{ app.request.get('param') }} <br>
 {{ app.environment }} <br>
- {# {{ dump(app.session) }} <br> #}
+{{ dump(app.session) }} <br>
 
 {{ render(controller(
   'App\\Controller\\DefaultController::mostPopularPosts',
   { 'number': 4 }
 )) }}
 
-    {#
+
     {% for message in app.flashes('notice') %}
       <div class="flash-notice">
         {{ message }}
@@ -68,5 +68,7 @@
       </script>
     {% endblock %}
     #}
+
+    
 </div>
 {% endblock %}
