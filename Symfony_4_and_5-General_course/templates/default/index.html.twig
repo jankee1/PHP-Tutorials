@@ -44,6 +44,14 @@
       {% endif %}
     {% endfor %}
 
-
+    {{ include('includes/subview.html.twig', {'users': users}) }}
+{#
+    {% block javascript %}
+    {{ parent() }}
+      <script type="text/javascript">
+        alert('asdasdasd')
+      </script>
+    {% endblock %}
+    #}
 </div>
 {% endblock %}
