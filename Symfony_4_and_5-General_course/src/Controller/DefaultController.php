@@ -74,9 +74,21 @@ class DefaultController extends AbstractController
     //       'random_gift' => $giftsservice->gifts
     //     ]);
     // }
-    public function index(GiftsService $giftsservice, Request $request, SessionInterface $session)
+    // public function index(GiftsService $giftsservice, Request $request, SessionInterface $session)
+    // {
+    //     $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+    //     //
+    //     // exit($request->query->get('page', 'default'));
+    //
+    //     return $this->render('default/index.html.twig', [
+    //       'controller_name' => 'DefaultController',
+    //     ]);
+    // }
+
+    #[Route('/', name: 'default')]
+    public function index(Request $request)
     {
-        $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+        // $users = $this->getDoctrine()->getRepository(User::class)->findAll();
         //
         // exit($request->query->get('page', 'default'));
 

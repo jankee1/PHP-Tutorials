@@ -18,7 +18,9 @@
         "symfony/maker-bundle": "^1.28",
         "symfony/monolog-bundle": "^3.6",
         "symfony/proxy-manager-bridge": "5.2.*",
+        "symfony/stopwatch": "5.2.*",
         "symfony/twig-bundle": "5.2.*",
+        "symfony/web-profiler-bundle": "5.2.*",
         "symfony/yaml": "5.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
