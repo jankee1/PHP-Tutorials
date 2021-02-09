@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
+use App\Entity\Video;
 use App\Services\GiftsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -171,7 +172,7 @@ class DefaultController extends AbstractController
   //   exit('Test controller forwarding - '. $param);
   // }
 
-  #[Route('/home', name: 'home')]
+  #[Route('/home/{id?}', name: 'home')]
   public function index(Request $request)
   {
     // ADD
@@ -183,14 +184,12 @@ class DefaultController extends AbstractController
       // $em->flush();
       //
       // dd($user->getId());
-
     // FIND
       // $repository = $this->getDoctrine()->getRepository(User::class);
       // $user = $repository->find(1);
       // $user = $repository->findOneBy(['name' => 'Robert', 'id' => 5]);
       // $user = $repository->findBy(['name' => 'Robert'], ['id' => 'DESC']);
       // $user = $repository->findAll();
-
     // UPDATE
       // $em = $this->getDoctrine()->getManager();
       // $id = 1;
@@ -202,15 +201,62 @@ class DefaultController extends AbstractController
       // }
       // $user->setName('nes user name');
       // $em->flush();
-      
     // DELETE
+      // $em = $this->getDoctrine()->getManager();
+      // $id = 2;
+      // $user = $em->getRepository(User::class)->find($id);
+      // $em->remove($user);
+      // $em->flush();
+      //
+      // dd($user);
+      // $em = $this->getDoctrine()->getManager();
+      // $conn = $em->getConnection();
+      // $sql = '
+      //   SELECT * FROM user u
+      //   WHERE u.id > :id
+      // ';
+      // $stmt = $conn->prepare($sql);
+      // $stmt->execute(['id' => 1]);
+      // dd($stmt->fetchAll());
+      // $em = $this->getDoctrine()->getManager();
+      // $user = new User;
+      // $user->setName('Mark');
+      // $em->persist($user);
+      // $em->flush();
+      // $em = $this->getDoctrine()->getManager();
+      // $user = new User();
+      // $user->setName('Roberto');
+      // for($i = 0; $i <= 3; $i++) {
+      //   $video = new Video();
+      //   $video->setTitle('Video Title ' . $i);
+      //   $user->addVideo($video);
+      //   $em->persist($video);
+      // }
+      // $em->persist($user);
+      // $em->flush();
+      // dd($video->getId());
+      // dd($user->getId());
+      // $video = $this->getDoctrine()
+      //   ->getRepository(Video::class)
+      //   ->find(5);
+      // dd($video->getUser()->getName());
+      // $user = $this->getDoctrine()
+      //   ->getRepository(User::class)
+      //   ->find(9);
+      // foreach($user->getVideos() as $video)
+      // {
+      //   dump($video->getTitle());
+      // }
       $em = $this->getDoctrine()->getManager();
-      $id = 2;
-      $user = $em->getRepository(User::class)->find($id);
-      $em->remove($user);
-      $em->flush();
 
-      dd($user);
+      $user = $this->getDoctrine()
+        ->getRepository(User::class)
+        ->find(9);
+
+        $em->remove($user);
+        $em->flush();
+        dump($user);
+
 
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
