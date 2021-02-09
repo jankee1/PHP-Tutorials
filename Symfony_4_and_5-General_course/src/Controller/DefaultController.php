@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
 use App\Entity\Video;
+use App\Entity\Address;
 use App\Services\GiftsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -247,17 +248,36 @@ class DefaultController extends AbstractController
       // {
       //   dump($video->getTitle());
       // }
+      // $em = $this->getDoctrine()->getManager();
+      // $user = new User();
+      // $user->setName('John');
+      // $address = new Address();
+      // $address->setStreet('street1');
+      // $address->setNumber(12);
+      // $user->setAdress($address);
+      // $em->persist($user);
+      // $em->persist($address);
+      // $em->flush();
+      // dump($user->getAdress());
+      // $em = $this->getDoctrine()->getManager();
+      // for($i = 1; $i <= 4; $i++)
+      // {
+      //   $user = new User();
+      //   $user->setName('Robert-' . $i);
+      //   $em->persist($user);
+      // }
+      // $em->flush();
+      // dump($user->getId());
+      // $user1 = $em->getRepository(User::class)->find(14);
+      // $user2 = $em->getRepository(User::class)->find(13);
+      // $user3 = $em->getRepository(User::class)->find(12);
+      // $user4 = $em->getRepository(User::class)->find(11);
+      // $user1->addFollowed($user2);
+      // $user1->addFollowed($user3);
+      // $user1->addFollowed($user4);
+      // $em->flush();
       $em = $this->getDoctrine()->getManager();
-
-      $user = $this->getDoctrine()
-        ->getRepository(User::class)
-        ->find(9);
-
-        $em->remove($user);
-        $em->flush();
-        dump($user);
-
-
+      
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
       ]);
