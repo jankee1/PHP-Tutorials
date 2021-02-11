@@ -6,7 +6,11 @@ use App\Repository\FileRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * MaterielInformatique
  * @ORM\Entity(repositoryClass=FileRepository::class)
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"video"="Video", "pdf"="Pdf"})
  */
 abstract class File
 {
