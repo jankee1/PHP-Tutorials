@@ -9,7 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
-use App\Entity\Video;
+use App\Entity\Pdf;
+use App\Entity\File;
+use App\Entity\Author;
 use App\Entity\Address;
 use App\Services\GiftsService;
 use Symfony\Component\HttpFoundation\Request;
@@ -299,9 +301,17 @@ class DefaultController extends AbstractController
   public function index(GiftsService $gifts, Request $request)
   {
       // $user = [];
-      $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+      $em = $this->getDoctrine()->getManager();
+      $author = $em->getRepository(Author::class)->findByIdWithPdf(1);
+      dump($author);
+      foreach( $author->getFiles() as $file )
+      {
+        // if($file instanceOf Pdf)  
+          dump($file->getFilename());
 
-      dump('abc123');
+      }
+
+      $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
