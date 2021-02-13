@@ -17,6 +17,7 @@ use App\Services\GiftsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Services\MyService;
 
 class DefaultController extends AbstractController
 {
@@ -298,18 +299,18 @@ class DefaultController extends AbstractController
   // }
 
   #[Route('/home/{id?}', name: 'home')]
-  public function index(GiftsService $gifts, Request $request)
+  public function index(GiftsService $gifts, Request $request, MyService $service)
   {
       // $user = [];
-      $em = $this->getDoctrine()->getManager();
-      $author = $em->getRepository(Author::class)->findByIdWithPdf(1);
-      dump($author);
-      foreach( $author->getFiles() as $file )
-      {
-        // if($file instanceOf Pdf)  
-          dump($file->getFilename());
-
-      }
+      // $em = $this->getDoctrine()->getManager();
+      // $author = $em->getRepository(Author::class)->findByIdWithPdf(1);
+      // dump($author);
+      // foreach( $author->getFiles() as $file )
+      // {
+      //   // if($file instanceOf Pdf)
+      //     dump($file->getFilename());
+      //
+      // }
 
       $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 

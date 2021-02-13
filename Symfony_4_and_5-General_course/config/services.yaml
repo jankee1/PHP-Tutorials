@@ -5,12 +5,15 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     download_directory: '../public/'
+    admin_email: 'admin@admin.com'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $globalParam: 'global param that can be used by all services'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -34,3 +37,9 @@ services:
     App\Controller\DefaultController:
         bind:
             $logger: '@monolog.logger.doctrine'
+
+    App\Services\MyService:
+        arguments:
+            # $second_service: '@App\Services\MySecondService'
+            # $param: 'some parameter 2'
+            # $admin_email: '%admin_email%'
