@@ -38,8 +38,29 @@ services:
         bind:
             $logger: '@monolog.logger.doctrine'
 
-    App\Services\MyService:
-        arguments:
+    # App\Services\MyService:
+        # arguments:
+        #     $service: '@App\Services\MySecondService'
+        # properties:
+        #     my: '@App\Services\MySecondService'
+        #     logger: '@monolog.logger'
+        # arguments:
             # $second_service: '@App\Services\MySecondService'
             # $param: 'some parameter 2'
             # $admin_email: '%admin_email%'
+    # App\Services\MySecondService:
+    #     lazy: true
+
+    # app.myservice:
+    #     class: App\Services\MyService
+    #     arguments:
+    #         $one: 'sooooomething'
+    #     public: true
+    # App\Services\MyService: '@app.myservice'
+
+    # App\Services\MyService:
+    #       tags:
+    #           - { name: doctrine.event_listener, event: postFlush }
+    #           - { name: kernel.cache_clearer }
+
+    App\Services\ServiceInterface: '@App\Services\MyService'
