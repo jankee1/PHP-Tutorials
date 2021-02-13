@@ -3,10 +3,34 @@
 namespace App\Services;
 
 use App\Services\MySecondService;
+use App\Services\ServiceInterface;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 
-class MyService {
+class MyService implements ServiceInterface {
+
+  public $logger;
+  public $my;
 
 
+
+  public function __construct()
+  {
+    // dump($service);
+    // $this->secService = $service;
+    dump('some message from extended MyService');
+    // dump($one);
+  }
+
+public function postFlush(PostFlushEventArgs $args)
+{
+  dump('some flush');
+  dump($args);
+}
+
+public function clear()
+{
+  dump('clear...');
+}
 
   // public function __construct($param, $admin_email, $globalParam)
   // {
@@ -14,11 +38,12 @@ class MyService {
   //   dump($admin_email);
   //   dump($globalParam);
   // }
-  use OptionalServiceTrait;
-  public function __construct()
-  {
-    // dump($second_service);
-  }
+  // use OptionalServiceTrait;
+  // public function someAction()
+  // {
+  //   dump($this->logger);
+  //   dump($this->my);
+  // }
 
   // /**
   // * @required

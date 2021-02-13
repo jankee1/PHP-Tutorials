@@ -17,7 +17,8 @@ use App\Services\GiftsService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Services\MyService;
+use App\Services\ServiceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DefaultController extends AbstractController
 {
@@ -299,7 +300,7 @@ class DefaultController extends AbstractController
   // }
 
   #[Route('/home/{id?}', name: 'home')]
-  public function index(GiftsService $gifts, Request $request, MyService $service)
+  public function index(GiftsService $gifts, Request $request, ContainerInterface $container, ServiceInterface $service)
   {
       // $user = [];
       // $em = $this->getDoctrine()->getManager();
@@ -311,12 +312,20 @@ class DefaultController extends AbstractController
       //     dump($file->getFilename());
       //
       // }
+      // $service->someAction();
+      // dump($container->get('app.myservice'));
 
-      $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+      $em = $this->getDoctrine()->getManager();
+      $user = $em->getRepository(User::class)->find(1);
+      $user->setName('Rob');
+      $em->persist($user);
+      $em->flush();
+
+      // $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
-        'users' => $users,
+        // 'users' => $users,
         'random_gift' => $gifts->gifts
       ]);
   }
