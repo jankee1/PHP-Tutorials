@@ -19,17 +19,17 @@ class AuthorRepository extends ServiceEntityRepository
         parent::__construct($registry, Author::class);
     }
 
-    public function findByIdWithPdf($id)
-    {
-      return $this->createQueryBuilder('a')
-        ->where('a.id = :id')
-        ->setParameter('id', $id)
-        ->innerJoin('a.files', 'f')
-        ->andWhere('f INSTANCE OF App\Entity\Pdf')
-        ->addSelect('f')
-        ->getQuery()
-        ->getOneOrNullResult();
-    }
+    // public function findByIdWithPdf($id)
+    // {
+    //   return $this->createQueryBuilder('a')
+    //     ->where('a.id = :id')
+    //     ->setParameter('id', $id)
+    //     ->innerJoin('a.files', 'f')
+    //     ->andWhere('f INSTANCE OF App\Entity\Pdf')
+    //     ->addSelect('f')
+    //     ->getQuery()
+    //     ->getOneOrNullResult();
+    // }
 
     // /**
     //  * @return Author[] Returns an array of Author objects
