@@ -379,16 +379,21 @@ class DefaultController extends AbstractController
       // dump($dell->get());
       // dump($ibm->get());
       // dump($apple->get());
-      $video = new Video();
       // $video->setTitle('write a blog post');
       // $video->setCreatedAt(new \DateTime('tomorrow'));
 
+      $em = $this->getDoctrine()->getManager();
+      $video = new Video();
+      // $videos = $em->getRepository(Video::class)->findAll();
+      // dump($videos);
       $form = $this->createForm(VideoFormType::class, $video);
       $form->handleRequest($request);
 
       if($form->isSubmitted() && $form->isValid())  {
-        dump($form->getData());
-        // return $this->redirectToRoute('home');
+        // dump($form->getData());
+        $em->persist($video);
+        $em->flush();
+        return $this->redirectToRoute('home');
       }
 
 

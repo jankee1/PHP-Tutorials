@@ -1,4 +1,5 @@
 twig:
+    form_themes: ['form_table_layout.html.twig']
     default_path: '%kernel.project_dir%/templates'
     globals:
         ga_code: GAcode-123

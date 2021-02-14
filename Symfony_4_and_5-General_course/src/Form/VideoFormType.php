@@ -15,9 +15,9 @@ class VideoFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            // ->add('filename')
-            // ->add('size')
-            // ->add('description')
+            ->add('filename')
+            ->add('size')
+            ->add('description')
             ->add('title', TextType::class, [
               'label' => 'Video title',
               'data' => 'Example title',
@@ -30,8 +30,8 @@ class VideoFormType extends AbstractType
             ->add('save', SubmitType::class, [
               'label' => 'Add a video'
             ])
-            // ->add('format')
-            // ->add('duration')
+            ->add('format')
+            ->add('duration')
             // ->add('author')
             // ->add('user')
         ;
