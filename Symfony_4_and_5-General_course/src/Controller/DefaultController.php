@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Services\ServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 
 class DefaultController extends AbstractController
 {
@@ -299,34 +301,87 @@ class DefaultController extends AbstractController
   //     ]);
   // }
 
+  // #[Route('/home/{id?}', name: 'home')]
+  // public function index(GiftsService $gifts, Request $request, ContainerInterface $container, ServiceInterface $service)
+  // {
+  //     // $user = [];
+  //     // $em = $this->getDoctrine()->getManager();
+  //     // $author = $em->getRepository(Author::class)->findByIdWithPdf(1);
+  //     // dump($author);
+  //     // foreach( $author->getFiles() as $file )
+  //     // {
+  //     //   // if($file instanceOf Pdf)
+  //     //     dump($file->getFilename());
+  //     //
+  //     // }
+  //     // $service->someAction();
+  //     // dump($container->get('app.myservice'));
+  //
+  //     $em = $this->getDoctrine()->getManager();
+  //     $user = $em->getRepository(User::class)->find(1);
+  //     $user->setName('Rob');
+  //     $em->persist($user);
+  //     $em->flush();
+  //
+  //     // $users = $this->getDoctrine()->getRepository(User::class)->findAll();
+  //
+  //     return $this->render('default/index.html.twig', [
+  //       'controller_name' => 'DefaultController',
+  //       // 'users' => $users,
+  //       'random_gift' => $gifts->gifts
+  //     ]);
+
   #[Route('/home/{id?}', name: 'home')]
-  public function index(GiftsService $gifts, Request $request, ContainerInterface $container, ServiceInterface $service)
+  public function index(Request $request)
   {
-      // $user = [];
-      // $em = $this->getDoctrine()->getManager();
-      // $author = $em->getRepository(Author::class)->findByIdWithPdf(1);
-      // dump($author);
-      // foreach( $author->getFiles() as $file )
-      // {
-      //   // if($file instanceOf Pdf)
-      //     dump($file->getFilename());
-      //
+      // $cache = new FileSystemAdapter();
+      // $posts = $cache->getItem('database.get_posts');
+      // if(!$posts->isHit()) {
+      //   $posts_from_db = ['post1', 'post2', 'post3', 'post4' ];
+      //   dump('Connected with database...');
+      //   $posts->set(serialize($posts_from_db));
+      //   $posts->expiresAfter(5);
+      //   $cache->save($posts);
       // }
-      // $service->someAction();
-      // dump($container->get('app.myservice'));
+      // $cache->deleteItem('database.get_posts');
+      // $cache->clear();
+      // dump(unserialize($posts->get()));
+      // $cache = new TagAwareAdapter(
+      //   new FileSystemAdapter()
+      // );
+      //
+      // $acer = $cache->getItem('acer');
+      // $dell = $cache->getItem('dell');
+      // $ibm = $cache->getItem('ibm');
+      // $apple = $cache->getItem('apple');
+      //
+      // if(!$acer->isHit()) {
+      //   $acer_from_db = 'acer laptop';
+      //   $acer->set($acer_from_db);
+      //   $acer->tag(['computers', 'laptops', 'acer']);
+      //   $cache->save($acer);
+      //   dump('acer from db');
+      // }
+      //
+      // if(!$dell->isHit()) {
+      //   $dell_from_db = 'dell desktops';
+      //   $dell->set($dell_from_db);
+      //   $dell->tag(['computers', 'desktops', 'dell']);
+      //   $cache->save($dell);
+      //   dump('dell from db hehe');
+      // }
+      //
+      // $cache->invalidateTags(['acer']);
+      //
+      // dump($acer->get());
+      // dump($dell->get());
+      // dump($ibm->get());
+      // dump($apple->get());
 
-      $em = $this->getDoctrine()->getManager();
-      $user = $em->getRepository(User::class)->find(1);
-      $user->setName('Rob');
-      $em->persist($user);
-      $em->flush();
-
-      // $users = $this->getDoctrine()->getRepository(User::class)->findAll();
-
+      
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
-        // 'users' => $users,
-        'random_gift' => $gifts->gifts
       ]);
   }
+
 }
