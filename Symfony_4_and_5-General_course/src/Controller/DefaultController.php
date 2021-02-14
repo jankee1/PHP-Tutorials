@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
+use App\Entity\Video;
 use App\Entity\Pdf;
 use App\Entity\File;
 use App\Entity\Author;
@@ -21,6 +22,7 @@ use App\Services\ServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use App\Form\VideoFormType;
 
 class DefaultController extends AbstractController
 {
@@ -377,10 +379,22 @@ class DefaultController extends AbstractController
       // dump($dell->get());
       // dump($ibm->get());
       // dump($apple->get());
+      $video = new Video();
+      // $video->setTitle('write a blog post');
+      // $video->setCreatedAt(new \DateTime('tomorrow'));
 
-      
+      $form = $this->createForm(VideoFormType::class, $video);
+      $form->handleRequest($request);
+
+      if($form->isSubmitted() && $form->isValid())  {
+        dump($form->getData());
+        // return $this->redirectToRoute('home');
+      }
+
+
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
+        'form1' => $form->createView()
       ]);
   }
 
