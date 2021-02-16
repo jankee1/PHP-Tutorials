@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VideoRepository::class)
@@ -12,6 +13,13 @@ class Video extends File
 {
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 10,
+     *      minMessage = "Video title must be at least {{ limit }} characters long",
+     *      maxMessage = "Video title cannot be longer than {{ limit }} characters"
+     * )
      */
     private $title;
 
@@ -35,6 +43,16 @@ class Video extends File
      * @ORM\Column(type="datetime")
      */
     private $created_at;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\File(
+     * maxSize = "1024k",
+     * mimeTypes = {"video/mp4", "application/pdf", "application/x-pdf"},
+     * mimeTypesMessage = "Please upload a valid video"
+     * )
+     */
+    private $file;
 
     public function getTitle(): ?string
     {
@@ -92,6 +110,18 @@ class Video extends File
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function setFile(string $file): self
+    {
+        $this->file = $file;
 
         return $this;
     }

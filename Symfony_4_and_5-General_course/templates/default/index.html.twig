@@ -71,7 +71,14 @@
 
 
     {{ form_start(form1) }}
-      {{ form_widget(form1) }}
+      {{ form_label(form1.title) }}
+      {{ form_widget(form1.title) }}
+      {% if form.created_at is defined %}
+        {{ form_label(form1.created_at) }}
+        {{ form_widget(form1.created_at) }}
+      {% endif %}
+      {{ form_label(form1.save) }}
+      {{ form_widget(form1.save) }}
     {{ form_end(form1) }}
 
 </div>
