@@ -334,7 +334,7 @@ class DefaultController extends AbstractController
   //     ]);
 
   #[Route('/home/{id?}', name: 'home')]
-  public function index(Request $request)
+  public function index(Request $request, \Swift_Mailer $mailer )
   {
       // $cache = new FileSystemAdapter();
       // $posts = $cache->getItem('database.get_posts');
@@ -382,31 +382,42 @@ class DefaultController extends AbstractController
       // $video->setTitle('write a blog post');
       // $video->setCreatedAt(new \DateTime('tomorrow'));
 
-      $em = $this->getDoctrine()->getManager();
-      $video = new Video();
-      // $videos = $em->getRepository(Video::class)->findAll();
-      // dump($videos);
-      $form = $this->createForm(VideoFormType::class, $video);
-      $form->handleRequest($request);
+      // $em = $this->getDoctrine()->getManager();
+      // $video = new Video();
+      // // $videos = $em->getRepository(Video::class)->findAll();
+      // // dump($videos);
+      // $form = $this->createForm(VideoFormType::class, $video);
+      // $form->handleRequest($request);
+      // if($form->isSubmitted() && $form->isValid())  {
+      //   // dump($form->getData());
+      //   $file = $form->get('file')->getData();
+      //   $fileName = sha1(random_bytes(14) . '.' . $file->guessExtension());
+      //   $file->move(
+      //     $this->getParameter('video_directory'),
+      //     $fileName
+      //   );
+      //   $video->setFile($fileName);
+      //   $em->persist($video);
+      //   $em->flush();
+      //   return $this->redirectToRoute('home');
+      // }
 
-      if($form->isSubmitted() && $form->isValid())  {
-        // dump($form->getData());
-        $file = $form->get('file')->getData();
-        $fileName = sha1(random_bytes(14) . '.' . $file->guessExtension());
-        $file->move(
-          $this->getParameter('video_directory'),
-          $fileName
-        );
-        $video->setFile($fileName);
-        $em->persist($video);
-        $em->flush();
-        return $this->redirectToRoute('home');
-      }
+      $message = (new \Swift_Message('HelloEmail'))
+        ->setFrom('send@example.com')
+        ->setTo('recipient@example.com')
+        ->setBody(
+          $this->renderView(
+            'emails/registration.html.twig',
+            ['name' => 'Robertice']
+          ), 'text/html'
+          )
+      ;
 
+      $mailer->send($message);
 
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
-        'form1' => $form->createView()
+        // 'form1' => $form->createView()
       ]);
   }
 
