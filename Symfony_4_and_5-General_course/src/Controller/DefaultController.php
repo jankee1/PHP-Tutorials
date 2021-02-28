@@ -8,6 +8,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Entity\SecurityUser;
@@ -16,14 +24,7 @@ use App\Entity\File;
 use App\Entity\Author;
 use App\Entity\Address;
 use App\Services\GiftsService;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Services\ServiceInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapter;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\VideoFormType;
 use App\Form\RegisterUserType;
 
@@ -436,8 +437,6 @@ class DefaultController extends AbstractController
         return $this->redirectToRoute('home');
       }
 
-
-
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
         // 'form1' => $form->createView()
@@ -445,4 +444,15 @@ class DefaultController extends AbstractController
       ]);
   }
 
+  #[Route('/login', name: 'login')]
+  public function login(AuthenticationUtils $authenticationUtils)
+  {
+    $error = $authenticationUtils->getLastAuthenticationError();
+    $lastUsername = $authenticationUtils->getLastUsername();
+
+    return $this->render('security/login.html.twig', [
+      'last_username' => $lastUsername,
+      'error' => $error
+    ]);
+  }
 }
