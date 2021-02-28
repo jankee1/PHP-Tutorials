@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use App\Entity\User;
 use App\Entity\Video;
+use App\Entity\SecurityUser;
 use App\Entity\Pdf;
 use App\Entity\File;
 use App\Entity\Author;
@@ -22,7 +23,10 @@ use App\Services\ServiceInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\VideoFormType;
+use App\Form\RegisterUserType;
+
 
 class DefaultController extends AbstractController
 {
@@ -334,7 +338,7 @@ class DefaultController extends AbstractController
   //     ]);
 
   #[Route('/home/{id?}', name: 'home')]
-  public function index(Request $request, \Swift_Mailer $mailer )
+  public function index(Request $request, \Swift_Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder )
   {
       // $cache = new FileSystemAdapter();
       // $posts = $cache->getItem('database.get_posts');
@@ -401,23 +405,43 @@ class DefaultController extends AbstractController
       //   $em->flush();
       //   return $this->redirectToRoute('home');
       // }
+      // $message = (new \Swift_Message('HelloEmail'))
+      //   ->setFrom('send@example.com')
+      //   ->setTo('recipient@example.com')
+      //   ->setBody(
+      //     $this->renderView(
+      //       'emails/registration.html.twig',
+      //       ['name' => 'Robertice']
+      //     ), 'text/html'
+      //     )
+      // ;
+      // $mailer->send($message);
+      $em = $this->getDoctrine()->getManager();
+      $users = $em->getRepository(SecurityUser::class)->findAll();
+      dump($users);
 
-      $message = (new \Swift_Message('HelloEmail'))
-        ->setFrom('send@example.com')
-        ->setTo('recipient@example.com')
-        ->setBody(
-          $this->renderView(
-            'emails/registration.html.twig',
-            ['name' => 'Robertice']
-          ), 'text/html'
-          )
-      ;
+      $user = new SecurityUser();
+      $form = $this->createForm(RegisterUserType::class, $user);
+      $form->handleRequest($request);
 
-      $mailer->send($message);
+      if($form->isSubmitted() && $form->isValid()){
+        $user->setPassword(
+          $passwordEncoder->encodePassword($user, $form->get('password')->getData())
+        );
+        $user->setEmail($form->get('email')->getData());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('home');
+      }
+
+
 
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
         // 'form1' => $form->createView()
+        'form' => $form->createView()
       ]);
   }
 
