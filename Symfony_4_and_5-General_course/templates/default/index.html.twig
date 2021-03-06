@@ -87,10 +87,12 @@
     {% endif %}
     {#
       {{ form(form) }}
+      {% if is_granted('ROLE_ADMIN') %}
+          <a href="..."> Only admin can do this </a>
+      {% endif %}
     #}
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="..."> Only admin can do this </a>
-    {% endif %}
+    <a href="{{ path('login') }}">AwesomeLink</a>
+
 </div>
 {% endblock %}
