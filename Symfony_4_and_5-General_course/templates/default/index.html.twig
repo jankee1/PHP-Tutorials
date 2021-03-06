@@ -88,5 +88,9 @@
     {#
       {{ form(form) }}
     #}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="..."> Only admin can do this </a>
+    {% endif %}
 </div>
 {% endblock %}

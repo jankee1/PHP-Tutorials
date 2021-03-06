@@ -448,8 +448,8 @@ class DefaultController extends AbstractController
   public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder)
   {
       $em = $this->getDoctrine()->getManager();
-      $users = $em->getRepository(SecurityUser::class)->findAll();
-      dump($users);
+      $video = $em->getRepository(SecurityUser::class)->find(1);
+      // dump($users);
 
       // $user = new SecurityUser();
       // $user->setEmail('admin@admin.com');
@@ -470,6 +470,7 @@ class DefaultController extends AbstractController
       // dump($user->getId());
       // dump($video->getId());
 
+      // $this->denyAccessUnlessGranted('VIDEO_DELETE', $video);
 
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
