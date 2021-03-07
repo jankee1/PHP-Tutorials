@@ -90,9 +90,19 @@
       {% if is_granted('ROLE_ADMIN') %}
           <a href="..."> Only admin can do this </a>
       {% endif %}
+
+      {% trans %}
+        some.key
+      {% endtrans %}
+
+      {{ 'some.key' | trans | raw }}
+
+      {{ 'symfony.learning'|transchoice(count) }}
     #}
 
     <a href="{{ path('login') }}">AwesomeLink</a>
+
+
 
 </div>
 {% endblock %}

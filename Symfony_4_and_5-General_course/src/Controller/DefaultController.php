@@ -16,6 +16,8 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+// use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Entity\SecurityUser;
@@ -445,7 +447,7 @@ class DefaultController extends AbstractController
   // }
 
   #[Route('/home', name: 'home')]
-  public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+  public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder, TranslatorInterface $translator)
   {
       // $em = $this->getDoctrine()->getManager();
       // $video = $em->getRepository(SecurityUser::class)->find(1);
@@ -469,11 +471,15 @@ class DefaultController extends AbstractController
       //
       // dump($user->getId());
       // dump($video->getId());
-
       // $this->denyAccessUnlessGranted('VIDEO_DELETE', $video);
+
+      // $translated = $translator->trans('some.key');
+      // dump($translated);
+      // dump($request->getLocale());
 
       return $this->render('default/index.html.twig', [
         'controller_name' => 'DefaultController',
+        'count' => 0
       ]);
   }
 
