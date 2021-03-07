@@ -447,8 +447,8 @@ class DefaultController extends AbstractController
   #[Route('/home', name: 'home')]
   public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder)
   {
-      $em = $this->getDoctrine()->getManager();
-      $video = $em->getRepository(SecurityUser::class)->find(1);
+      // $em = $this->getDoctrine()->getManager();
+      // $video = $em->getRepository(SecurityUser::class)->find(1);
       // dump($users);
 
       // $user = new SecurityUser();
