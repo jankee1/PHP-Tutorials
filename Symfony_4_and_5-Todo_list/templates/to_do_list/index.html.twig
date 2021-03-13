@@ -12,29 +12,13 @@
     </div>
 
     <ul>
-      <li>
-        <a href="{{ path('switch_status', {id: 1}) }}"> <span class="task-list-item">Do shopping </span> </a
-        ><a onclick="return confirm('Are you sure to delete?')" href="{{ path('delete_task', {id: 1}) }}"><span class="close">X</span></a>
+      {% for task in tasks %}
+      <li class="{% if task.status %} checked {% endif %}">
+        <a href="{{ path('switch_status', {id: task.id}) }}">
+          <span class="task-list-item"> {{ task.title }} </span>
+        </a>
+        <a onclick="return confirm('Are you sure to delete?')" href="{{ path('delete_task', {id: task.id }) }}"><span class="close">X</span></a>
       </li>
-      <li class="checked">
-        <a href="undone"> <span class="task-list-item">Buy eggs </span> </a
-        ><a onclick="return confirm('Are you sure to delete?')" href="delete"><span class="close">X</span></a>
-      </li>
-      <li>
-        <a href="done"> <span class="task-list-item">Meet John </span> </a
-        ><a onclick="return confirm('Are you sure to delete?')" href="delete"><span class="close">X</span></a>
-      </li>
-      <li>
-        <a href="done"> <span class="task-list-item">Read a book </span> </a
-        ><a onclick="return confirm('Are you sure to delete?')" href="delete"><span class="close">X</span></a>
-      </li>
-      <li>
-        <a href="done"> <span class="task-list-item">Learn Doctrine ORM </span> </a
-        ><a onclick="return confirm('Are you sure to delete?')" href="delete"><span class="close">X</span></a>
-      </li>
-      <li>
-        <a href="done"> <span class="task-list-item">Prepare a meal </span> </a
-        ><a onclick="return confirm('Are you sure to delete?')" href="delete"><span class="close">X</span></a>
-      </li>
+      {% endfor %}
     </ul>
 {% endblock %}
