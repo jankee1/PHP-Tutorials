@@ -1,5 +1,6 @@
-<?php include('includes/_header.php'); ?>
+{% extends 'admin/base.html.twig' %}
 
+{% block mainadmin %}
 <h2>Editing category</h2>
 
 <form action="#" method="POST">
@@ -21,5 +22,4 @@
     <button class="btn btn-primary mt-3" type="submit">Save</button>
 
 </form>
-
-<?php include('includes/_footer.php'); ?>
+{% endblock %}
