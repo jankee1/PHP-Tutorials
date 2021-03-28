@@ -9,6 +9,7 @@ abstract class CategoryTreeAbstract {
 
   protected static $dbconnection;
   public $categoriesArrayFromDb;
+  public $categorylist;
 
   public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $urlgenerator)
   {
