@@ -1,7 +1,7 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block customstylesheets %}
-{{ parent() }}
+{{parent()}}
 <style>
     .fa-ul>li {
     margin-top: 15px;
@@ -12,24 +12,24 @@
 {% block mainadmin %}
 <h2>Categories list</h2>
 
-<!-- <ul class="fa-ul text-left"> -->
-  {{ categories|raw }}
-<!-- </ul> -->
+{{categories|raw}}
 
-<form action="#" method="POST">
+{# <form action="#" method="POST"> #}
+{{ form_start(form, {'attr': {'novalidate':'novalidate'} }) }}
     <div class="col-md-4 mb-3">
         <label for="validationServer01">Add new category</label>
-        <input type="text" class="form-control is-invalid" id="validationServer01" placeholder="Category name" value="Funny"
-            required>
+        {# <input type="text" class="form-control is-invalid" id="validationServer01" placeholder="Category name" value="Funny"
+            required> #}
+        {{ form_widget(form.name,{'attr': {'class': 'form-control' ~ is_invalid, 'placeholder': 'Category name'}, 'id': 'validationServer01' }) }}
         <br>
 	    <label for="inlineFormCustomSelect">Parent:</label>
         <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-          {{ render(controller('App\\Controller\\AdminController::getAllCategories')) }}
+            {{render(controller('App\\Controller\\AdminController::getAllCategories'))}}
         </select>
         <div class="invalid-feedback">
-            Category already exists!
+           {{ form_errors(form.name) }}
         </div>
         <button class="btn btn-primary mt-3" type="submit">Add</button>
     </div>
-</form>
+{{ form_end(form) }}
 {% endblock %}
