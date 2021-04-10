@@ -16,11 +16,13 @@
   {{ categories|raw }}
 <!-- </ul> -->
 
-<form action="#" method="POST">
+<!-- <form action="#" method="POST"> -->
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
     <div class="col-md-4 mb-3">
         <label for="validationServer01">Add new category</label>
-        <input type="text" class="form-control is-invalid" id="validationServer01" placeholder="Category name" value="Funny"
-            required>
+        <!-- <input type="text" class="form-control is-invalid" id="validationServer01" placeholder="Category name" value="Funny"
+            required> -->
+            {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Category name'}, 'id': 'validationServer01'}) }}
         <br>
 	    <label for="inlineFormCustomSelect">Parent:</label>
         <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
@@ -31,5 +33,5 @@
         </div>
         <button class="btn btn-primary mt-3" type="submit">Add</button>
     </div>
-</form>
+{{ form_end(form) }}
 {% endblock %}
