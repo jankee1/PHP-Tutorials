@@ -29,7 +29,7 @@
           {{ render(controller('App\\Controller\\AdminController::getAllCategories')) }}
         </select>
         <div class="invalid-feedback">
-            Category already exists!
+            {{ form_errors(form.name) }}
         </div>
         <button class="btn btn-primary mt-3" type="submit">Add</button>
     </div>
