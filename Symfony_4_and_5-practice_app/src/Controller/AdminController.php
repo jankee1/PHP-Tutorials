@@ -23,7 +23,6 @@ class AdminController extends AbstractController
         return $this->render('admin/my_profile.html.twig');
     }
 
-
     /**
      * @Route("/categories", name="categories", methods={"GET", "POST"})
      */
