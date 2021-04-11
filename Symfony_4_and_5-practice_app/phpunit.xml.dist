@@ -13,6 +13,7 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="8.5" />
+        <!-- <server name="DATABASE_URL" value="mysql://root:@127.0.0.1:3306/Symfony_4_and_5-practice_app?serverVersion=mariadb-10.4.11" /> -->
     </php>
 
     <testsuites>
