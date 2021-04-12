@@ -54,4 +54,24 @@ class AdminControllerCategoriesTest extends WebTestCase
       $this->assertNotNull($category);
       $this->assertSame('Other electronics', $category->getName());
     }
+
+    public function testEditCategory()
+    {
+        $crawler = $this->client->request('GET', '/admin/edit-category/1');
+        $form = $crawler->selectButton('Save')->form([
+            'category[parent]' => 0,
+            'category[name]' => 'Electronics 2'
+        ]);
+        $this->client->submit($form);
+
+        $category = $this->em->getRepository(Category::class)->find(1);
+        $this->assertSame('Electronics 2', $category->getName());
+    }
+
+    public function testDeleteCategory()
+    {
+      $crawler = $this->client->request('GET', '/admin/delete-category/1');
+      $category = $this->em->getRepository(Category::class)->find(1);
+      $this->assertNull($category);
+    }
 }
