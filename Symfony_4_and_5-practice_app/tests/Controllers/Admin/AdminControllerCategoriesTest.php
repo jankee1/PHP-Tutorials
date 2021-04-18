@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controllers;
+namespace App\Tests\Controllers\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\Category;

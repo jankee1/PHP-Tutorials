@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Category;
 use App\Utils\CategoryTreeFrontPage;
@@ -18,14 +19,14 @@ class FrontController extends AbstractController
     }
 
     #[Route('/video-list/category/{categoryname},{id}/{page}', name: 'video_list', defaults: ['page' => 1, 'name' => 'video_list'])]
-    public function videoList($id, CategoryTreeFrontPage $categories, $page): Response
+    public function videoList($id, CategoryTreeFrontPage $categories, $page, Request $request): Response
     {
         $categories->getCategoryListAndParent($id);
         $ids = $categories->getChildIds($id);
         array_push($ids, $id);
         $videos = $this->getDoctrine()
           ->getRepository(Video::class)
-          ->findByChildIds($ids, $page);
+          ->findByChildIds($ids, $page, $request->get('sortby'));
 
         return $this->render('front/video_list.html.twig', [
           'subcategories' => $categories,
@@ -39,10 +40,23 @@ class FrontController extends AbstractController
         return $this->render('front/video_details.html.twig');
     }
 
-    #[Route('/search-result', name: 'search_results', methods: ['POST'])]
-    public function searchResults(): Response
+    #[Route('/search-results/{page}', name: 'search_results', methods: ['GET'], defaults: ['page' => 1])]
+    public function searchResults($page, Request $request): Response
     {
-        return $this->render('front/search_results.html.twig');
+      $videos = null;
+      $query =null;
+      
+        if($query = $request->get('query')) {
+          $videos = $this->getDoctrine()
+            ->getRepository(Video::class)
+            ->findByTitle($query, $page, $request->get('sortby'));
+          if(!$videos->getItems())
+            $videos = null;
+        }
+        return $this->render('front/search_results.html.twig', [
+          'videos' => $videos,
+          'query' => $query
+        ]);
     }
 
     #[Route('/pricing', name: 'pricing')]
@@ -78,4 +92,5 @@ class FrontController extends AbstractController
         'categories' => $categories
       ]);
     }
+
 }
