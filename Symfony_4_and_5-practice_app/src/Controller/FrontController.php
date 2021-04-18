@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Category;
 use App\Utils\CategoryTreeFrontPage;
 use App\Entity\Video;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class FrontController extends AbstractController
 {
@@ -45,7 +46,7 @@ class FrontController extends AbstractController
     {
       $videos = null;
       $query =null;
-      
+
         if($query = $request->get('query')) {
           $videos = $this->getDoctrine()
             ->getRepository(Video::class)
@@ -72,9 +73,17 @@ class FrontController extends AbstractController
     }
 
     #[Route('/login', name: 'login')]
-    public function login(): Response
+    public function login(AuthenticationUtils $helper): Response
     {
-        return $this->render('front/login.html.twig');
+        return $this->render('front/login.html.twig', [
+          'error' => $helper->getLastAuthenticationError()
+        ]);
+    }
+
+    #[Route('/logout', name: 'logout')]
+    public function logout(): void
+    {
+        throw new \Exception('This should never be reached!');
     }
 
     #[Route('/payment', name: 'payment')]
