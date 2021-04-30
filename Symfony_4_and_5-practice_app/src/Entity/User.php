@@ -55,8 +55,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank(message = "Valid last name is required")
+
      */
+     //      * @Assert\NotBlank(message = "Valid API key is required")
     private $vimeo_api_key;
 
     public function getId(): ?int
