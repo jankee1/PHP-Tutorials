@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\User;
 use App\Form\UserType;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FrontController extends AbstractController
 {
@@ -83,14 +85,26 @@ class FrontController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request)
+    public function register(Request $request, UserPasswordEncoderInterface $password_encoder)
     {
         $user = new User;
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            dd('registering user ...');
+            $em = $this->getDoctrine()->getManager();
+            $user->setName($request->request->get('user')['name']);
+            $user->setLastName($request->request->get('user')['last_name']);
+            $user->setEmail($request->request->get('user')['email']);
+            $password = $password_encoder->encodePassword($user, $request->request->get('user')['password']['first']);
+            $user->setPassword($password);
+            $user->setRoles(['ROLE_USER']);
+            $em->persist($user);
+            $em->flush();
+
+            $this->loginUserAutomatically($user, $password);
+
+            return $this->redirectToRoute('admin_main_page');
         }
         return $this->render('front/register.html.twig',['form'=>$form->createView()]);
     }
@@ -129,5 +143,17 @@ class FrontController extends AbstractController
         return $this->render('front/_main_categories.html.twig',[
             'categories'=>$categories
         ]);
+    }
+
+    private function loginUserAutomatically($user, $password) {
+      $token = new UsernamePasswordToken(
+        $user,
+        $password,
+        'main',
+        $user->getRoles()
+      );
+
+      $this->get('security.token_storage')->SetToken($token);
+      $this->get('session')->set('_security_main', serialize($token));
     }
 }
