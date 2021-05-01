@@ -4,13 +4,13 @@
     <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
             <div align="center" class="embed-responsive embed-responsive-16by9">
-              {% if is_granted('IS_AURHENTICATED_REMEMBERED') %}
-                <iframe class="" src="{{ video.getPath() }}" frameborder="0"
+            {#  {% if is_granted('IS_AURHENTICATED_REMEMBERED') %} #}
+                <iframe class="" src="{{ video.vimeoid(app.user) }}" frameborder="0"
                     allowfullscreen></iframe>
-              {% else %}
-              <iframe class="" src="https://player.vimeo.com/video/113716040" frameborder="0"
-                  allowfullscreen></iframe>
-              {% endif %}
+          {#    {% else %}
+              <!-- <iframe class="" src="https://player.vimeo.com/video/113716040" frameborder="0"
+                  allowfullscreen></iframe> -->
+              {% endif %} #}
             </div>
             <div class="card-body">
                 <h3>{{ video.getTitle() }}</h3>
@@ -38,7 +38,7 @@
                         <i class="fa fa-thumbs-down"></i>
                         </button> -->
                         {% endif %}
-                        <a class="ml-1" href="{{ path('video_details') }}#video_comments">Comments (32)</a>
+                        <a class="ml-1" href="{{ path('video_details', {'vidoe': video.id}) }}#video_comments">Comments ({{ video.comments.count }})</a>
                     </div>
                     <small class="text-muted">{{ video.getDuration() }} mins</small>
                 </div>
