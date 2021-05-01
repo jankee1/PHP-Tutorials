@@ -1,20 +1,18 @@
 <?php
-
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\Table(name="comments")
- * @ORM\HasLifecycleCallbacks()
- * @ORM\Entity(repositoryClass=CommentRepository::class)
+ *  @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
     /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -30,13 +28,13 @@ class Comment
     private $created_at;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Video::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Video", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $video;
@@ -64,26 +62,24 @@ class Comment
     }
 
     /**
-    * @ORM\PrePersist
-    */
-
+     * @ORM\PrePersist
+     */
     public function setCreatedAt(): self
     {
-        // \DateTimeInterface $created_at
         if(isset($this->created_at2))
-          $this->created_at = $created_at2;
+        $this->created_at = $this->created_at2;
         else
-          $this->created_at = new \DateTime();
-        //$this->created_at = $created_at;
-
+        $this->created_at = new \DateTime();
         return $this;
     }
 
     public function setCreatedAtForFixtures($created_at): self
     {
-      $this->created_at2 = $created_at;
-      return $this;
+        $this->created_at2 = $created_at;
+
+        return $this;
     }
+
     public function getUser(): ?User
     {
         return $this->user;
