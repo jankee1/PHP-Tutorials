@@ -49,7 +49,6 @@ class FrontController extends AbstractController
      */
     public function videoDetails(VideoRepository $repo, $video)
     {
-        dump($repo->videoDetails($video));
         return $this->render('front/video_details.html.twig', [
           'video' => $repo->videoDetails($video)
         ]);
