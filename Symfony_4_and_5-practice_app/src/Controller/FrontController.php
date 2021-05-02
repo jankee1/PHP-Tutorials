@@ -4,15 +4,16 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Category;
-use App\Entity\Video;
-use App\Utils\CategoryTreeFrontPage;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use App\Entity\User;
-use App\Form\UserType;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use App\Entity\Category;
+use App\Entity\Video;
+use App\Entity\User;
+use App\Entity\Comment;
+use App\Utils\CategoryTreeFrontPage;
+use App\Form\UserType;
 use App\Repository\VideoRepository;
 
 class FrontController extends AbstractController
@@ -136,6 +137,28 @@ class FrontController extends AbstractController
     public function payment()
     {
         return $this->render('front/payment.html.twig');
+    }
+
+    /**
+    * @Route("/new-comment/{video}", methods={"POST"}, name="new_comment")
+    */
+    public function newComment(Video $video, Request $request)
+    {
+      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+      if(!empty(trim($request->request->get('comment')))) {
+        $comment = new Comment();
+        $comment->setContent($request->request->get('comment'));
+        $comment->setUser($this->getUser());
+        $comment->setVideo($video);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($comment);
+        $em->flush();
+
+      }
+      return $this->redirectToRoute('video_details', [
+        'video' => $video->getId()
+      ]);
     }
 
     public function mainCategories()
