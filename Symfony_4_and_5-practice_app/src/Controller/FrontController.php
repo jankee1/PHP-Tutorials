@@ -4,17 +4,17 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use App\Entity\Category;
 use App\Entity\Video;
-use App\Entity\User;
-use App\Entity\Comment;
-use App\Utils\CategoryTreeFrontPage;
-use App\Form\UserType;
 use App\Repository\VideoRepository;
+use App\Utils\CategoryTreeFrontPage;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use App\Entity\User;
+use App\Form\UserType;
+use App\Entity\Comment;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class FrontController extends AbstractController
 {
@@ -50,10 +50,36 @@ class FrontController extends AbstractController
      */
     public function videoDetails(VideoRepository $repo, $video)
     {
-        return $this->render('front/video_details.html.twig', [
-          'video' => $repo->videoDetails($video)
+        return $this->render('front/video_details.html.twig',
+        [
+            'video'=>$repo->videoDetails($video),
         ]);
     }
+
+    /**
+     * @Route("/new-comment/{video}", methods={"POST"}, name="new_comment")
+    */
+    public function newComment(Video $video, Request $request )
+     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
+        if ( !empty( trim($request->request->get('comment')) ) )
+        {
+
+            // $video = $this->getDoctrine()->getRepository(Video::class)->find($video_id);
+
+            $comment = new Comment();
+            $comment->setContent($request->request->get('comment'));
+            $comment->setUser($this->getUser());
+            $comment->setVideo($video);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('video_details',['video'=>$video->getId()]);
+     }
 
     /**
      * @Route("/search-results/{page}", methods={"GET"}, defaults={"page": "1"}, name="search_results")
@@ -89,22 +115,24 @@ class FrontController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $password_encoder)
+    public function register(UserPasswordEncoderInterface $password_encoder, Request $request)
     {
         $user = new User;
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            $em = $this->getDoctrine()->getManager();
+            $entityManager = $this->getDoctrine()->getManager();
+
             $user->setName($request->request->get('user')['name']);
             $user->setLastName($request->request->get('user')['last_name']);
             $user->setEmail($request->request->get('user')['email']);
             $password = $password_encoder->encodePassword($user, $request->request->get('user')['password']['first']);
             $user->setPassword($password);
             $user->setRoles(['ROLE_USER']);
-            $em->persist($user);
-            $em->flush();
+
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             $this->loginUserAutomatically($user, $password);
 
@@ -139,28 +167,6 @@ class FrontController extends AbstractController
         return $this->render('front/payment.html.twig');
     }
 
-    /**
-    * @Route("/new-comment/{video}", methods={"POST"}, name="new_comment")
-    */
-    public function newComment(Video $video, Request $request)
-    {
-      $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
-      if(!empty(trim($request->request->get('comment')))) {
-        $comment = new Comment();
-        $comment->setContent($request->request->get('comment'));
-        $comment->setUser($this->getUser());
-        $comment->setVideo($video);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($comment);
-        $em->flush();
-
-      }
-      return $this->redirectToRoute('video_details', [
-        'video' => $video->getId()
-      ]);
-    }
-
     public function mainCategories()
     {
         $categories = $this->getDoctrine()
@@ -171,15 +177,89 @@ class FrontController extends AbstractController
         ]);
     }
 
-    private function loginUserAutomatically($user, $password) {
-      $token = new UsernamePasswordToken(
-        $user,
-        $password,
-        'main',
-        $user->getRoles()
-      );
+    private function loginUserAutomatically($user, $password)
+    {
+        $token = new UsernamePasswordToken(
+            $user,
+            $password,
+            'main', // security.yaml
+            $user->getRoles()
+        );
+        $this->get('security.token_storage')->setToken($token);
+        $this->get('session')->set('_security_main',serialize($token));
+    }
 
-      $this->get('security.token_storage')->SetToken($token);
-      $this->get('session')->set('_security_main', serialize($token));
+        /**
+     * @Route("/video-list/{video}/like", name="like_video", methods={"POST"})
+     * @Route("/video-list/{video}/dislike", name="dislike_video", methods={"POST"})
+     * @Route("/video-list/{video}/unlike", name="undo_like_video", methods={"POST"})
+     * @Route("/video-list/{video}/undodislike", name="undo_dislike_video", methods={"POST"})
+     */
+    public function toggleLikesAjax(Video $video, Request $request)
+    {
+
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
+        switch($request->get('_route'))
+        {
+            case 'like_video':
+            $result = $this->likeVideo($video);
+            break;
+
+            case 'dislike_video':
+            $result = $this->dislikeVideo($video);
+            break;
+
+            case 'undo_like_video':
+            $result = $this->undoLikeVideo($video);
+            break;
+
+            case 'undo_dislike_video':
+            $result = $this->undoDislikeVideo($video);
+            break;
+        }
+
+        return $this->json(['action' => $result,'id'=>$video->getId()]);
+    }
+
+    private function likeVideo($video)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+        $user->addLikedVideo($video);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return 'liked';
+    }
+    private function dislikeVideo($video)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+        $user->addDislikedVideo($video);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return 'disliked';
+    }
+    private function undoLikeVideo($video)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+        $user->removeLikedVideo($video);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return 'undo liked';
+    }
+    private function undoDislikeVideo($video)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+        $user->removeDislikedVideo($video);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return 'undo disliked';
     }
 }

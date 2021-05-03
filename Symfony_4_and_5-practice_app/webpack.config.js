@@ -13,11 +13,11 @@ Encore
     .setPublicPath('/assets')
     // only needed for CDN's or sub-directory deploy
     //.setManifestKeyPrefix('build/')
-
+    .addEntry('js/likes', './assets/js/likes.js')
     // .addEntry('app', './assets/app.js')
     .addStyleEntry('css/dashboard', ['./assets/css/dashboard.css'])
     .addStyleEntry('css/login', ['./assets/css/login.css'])
-
+    .addStyleEntry('css/likes', ['./assets/css/likes.css'])
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
