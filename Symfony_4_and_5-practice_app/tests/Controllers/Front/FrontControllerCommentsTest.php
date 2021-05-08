@@ -3,11 +3,11 @@
 namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Tests\Rollback;
+use App\Tests\RoleAdmin;
 
 class FrontControllerCommentsTest extends WebTestCase
 {
-    use Rollback;
+    use RoleAdmin;
 
     public function testNotLoggedInUser()
     {
