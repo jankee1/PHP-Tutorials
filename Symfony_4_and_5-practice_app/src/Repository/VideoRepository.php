@@ -92,7 +92,10 @@ class VideoRepository extends ServiceEntityRepository
 
     public function prepareQuery(string $query): array
     {
-      return explode(' ', $query);
+      $terms = array_unique(explode(' ', $query));
+      return array_filter($terms, function($item){
+        return 2 <= mb_strlen($item);
+      });
     }
 
     public function videoDetails($id)
