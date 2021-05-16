@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Utils\CategoryTreeAdminList;
 use App\Utils\CategoryTreeAdminOptionList;
 use App\Entity\Category;
+use App\Entity\Video;
 use App\Form\CategoryType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -84,8 +85,17 @@ class AdminController extends AbstractController
      */
     public function videos()
     {
-        return $this->render('admin/videos.html.twig');
+        if($this->isGranted('ROLE_ADMIN')) {
+          $video = $this->getDoctrine()->getRepository(Video::class)->findAll();
+        }
+        else {
+          $video = $this->getUser()->getLikedVideos();
+        }
+        return $this->render('admin/videos.html.twig', [
+          'videos' => $video
+        ]);
     }
+
 
     /**
      * @Route("/su/upload-video", name="upload_video")
