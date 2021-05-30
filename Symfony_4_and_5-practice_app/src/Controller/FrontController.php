@@ -9,7 +9,9 @@ use App\Entity\Video;
 use App\Repository\VideoRepository;
 use App\Utils\CategoryTreeFrontPage;
 use Symfony\Component\HttpFoundation\Request;
+
 use App\Entity\Comment;
+
 use App\Controller\Traits\Likes;
 use App\Utils\VideoForNoValidSubscription;
 
@@ -28,7 +30,7 @@ class FrontController extends AbstractController
     /**
      * @Route("/video-list/category/{categoryname},{id}/{page}", defaults={"page": "1"}, name="video_list")
      */
-    public function videoList($id, $page, CategoryTreeFrontPage $categories, Request $request, VideoForNoValidSubscription $video_no_members) // c_88
+    public function videoList($id, $page, CategoryTreeFrontPage $categories, Request $request, VideoForNoValidSubscription $video_no_members)
     {
         $ids = $categories->getChildIds($id);
         array_push($ids, $id);
@@ -41,7 +43,7 @@ class FrontController extends AbstractController
         return $this->render('front/video_list.html.twig',[
             'subcategories' => $categories,
             'videos'=>$videos,
-            'video_no_members' => $video_no_members->check()
+            'video_no_members' => $video_no_members->check() // c_88
         ]);
     }
 
@@ -106,23 +108,6 @@ class FrontController extends AbstractController
         ]);
     }
 
-    // /**
-    //  * @Route("/pricing", name="pricing")
-    //  */
-    // public function pricing()
-    // {
-    //     return $this->render('front/pricing.html.twig');
-    // }
-
-
-    /**
-     * @Route("/payment", name="payment")
-     */
-    public function payment()
-    {
-        return $this->render('front/payment.html.twig');
-    }
-
     public function mainCategories()
     {
         $categories = $this->getDoctrine()
@@ -132,7 +117,6 @@ class FrontController extends AbstractController
             'categories'=>$categories
         ]);
     }
-
 
         /**
      * @Route("/video-list/{video}/like", name="like_video", methods={"POST"})
