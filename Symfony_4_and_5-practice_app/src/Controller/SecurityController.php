@@ -16,10 +16,12 @@ use App\Form\UserType;
 
 
 use App\Entity\Subscription;
+use App\Controller\Traits\SaveSubscription;
 
 
 class SecurityController extends AbstractController
 {
+    use SaveSubscription;
 
     /**
      * @Route("/login", name="login")
@@ -69,12 +71,12 @@ class SecurityController extends AbstractController
             $subscription = new Subscription();
             $subscription->setValidTo($date);
             $subscription->setPlan($session->get('planName'));
-            $subscription->setFreePlanUsed(false);
             if($plan == Subscription::getPlanDataNameByIndex(0)) // free plan
             {
                 $subscription->setFreePlanUsed(true);
                 $subscription->setPaymentStatus('paid');
             }
+            $subscription->setFreePlanUsed(false);
             $user->setSubscription($subscription);
 
             $entityManager->persist($user);
@@ -87,7 +89,7 @@ class SecurityController extends AbstractController
 
         if($this->isGranted('IS_AUTHENTICATED_REMEMBERED') && $plan == Subscription::getPlanDataNameByIndex(0)) // free plan
         {
-            // to do save subscription
+            $this->saveSubscription($plan, $this->getUser());
             return $this->redirectToRoute('admin_main_page');
 
         }
