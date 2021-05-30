@@ -47,6 +47,18 @@ class SecurityController extends AbstractController {
 
           return $this->redirectToRoute('admin_main_page');
       }
+
+        if($this->isGranted('IS_AUTHENTICATED_REMEMBERED') && $plan == Subscription::getPlanDataNameByIndex(0)) // free plan
+        {
+            // to do save subscription
+            return $this->redirectToRoute('admin_main_page');
+
+        }
+        elseif($this->isGranted('IS_AUTHENTICATED_REMEMBERED'))
+        {
+            return $this->redirectToRoute('payment');
+        }
+        
       return $this->render('front/register.html.twig',['form'=>$form->createView()]);
   }
 
