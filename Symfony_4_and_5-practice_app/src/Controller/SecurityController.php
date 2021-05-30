@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Subscription;
 
 class SecurityController extends AbstractController {
 
@@ -20,6 +21,11 @@ class SecurityController extends AbstractController {
  */
   public function register(UserPasswordEncoderInterface $password_encoder, Request $request, SessionInterface $session, $plan)
   {
+    if( $request->isMethod('GET')  )
+    {
+        $session->set('planName',$plan);
+        $session->set('planPrice', Subscription::getPlanDataPriceByName($plan));
+    }
       $user = new User;
       $form = $this->createForm(UserType::class, $user);
       $form->handleRequest($request);
