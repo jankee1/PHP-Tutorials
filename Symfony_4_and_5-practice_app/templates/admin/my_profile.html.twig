@@ -2,7 +2,7 @@
 
 {% block mainadmin %}
 
-<h2>My profile <small><a onclick="return confirm('Are you sure?');" href="#">delete account</a></small></h2>
+<h2>My profile <small><a onclick="return confirm('Are you sure?');" href="{{ path('delete_account') }}">delete account</a></small></h2>
 {# {% if not is_granted('ROLE_ADMIN') %}
 <p class="text-left">My plan - Pro. <a onclick="return confirm('Are you sure? This can not be undone. Remember also to cancel payment in your PayPal account.');"
         href="#">cancel plan</a></p>
