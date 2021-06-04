@@ -15,14 +15,14 @@
             </tr>
         </thead>
         <tbody>
-        {% for i in 1..10 %}
-            <tr>
-            <td>{{ i }}</td>
-            <td>Adam</td>
-            <td>Smith</td>
-            <td>adam@smith.com</td>
-            <td><a href="#" onclick="return confirm('Are you sure?');"><i class="fas fa-trash"></i></a></td>
-            </tr>
+        {% for  user in users %}
+          <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td><a href="{{ path('delete_user', {'user': user.id}) }}" onclick="return confirm('Are you sure?');"><i class="fas fa-trash"></i></a></td>
+          </tr>
         {% endfor %}
         </tbody>
         </table>
