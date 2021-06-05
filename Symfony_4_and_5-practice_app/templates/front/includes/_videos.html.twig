@@ -5,9 +5,10 @@
                 {% for video in videos %}
 
                 {% if video_no_members is not null %}
-                    {% set videoid = 'https://player.vimeo.com/video/' ~ video_no_members %}
+                  {#  {% set videoid = 'https://player.vimeo.com/video/' ~ video_no_members %} #}
+                    {% set videoid = video_no_members %}
                 {% else %}
-                    {% set videoid = video.vimeoid %}
+                    {% set videoid = video.path %}
                 {% endif %}
 
                 <div class="col-md-4">
