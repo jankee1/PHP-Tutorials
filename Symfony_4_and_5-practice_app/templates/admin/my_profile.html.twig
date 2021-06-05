@@ -1,13 +1,13 @@
 {% extends 'admin/base.html.twig' %}
 {% block mainadmin %}
 
-{% for label, messages in app.flashes %}
+{# {% for label, messages in app.flashes %}
   {% for message in messages %}
     <div class="alert alert-{{label}}" role="alert">
       {{ message }}
     </div>
   {% endfor %}
-{% endfor %}
+{% endfor %} #}
 
 <h2>My profile <small><a onclick="return confirm('Are you sure?');" href="{{path('delete_account')}}">delete account</a></small></h2>
 
