@@ -6,6 +6,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use App\Utils\CategoryTreeAdminOptionList;
 use App\Utils\CategoryTreeAdminList;
 use App\Entity\Category;
 
@@ -106,6 +107,12 @@ class CategoriesController extends AbstractController
 
         }
         return false;
+    }
+
+    public function getAllCategories(CategoryTreeAdminOptionList $categories, $editedCategory = null)
+    {
+        $categories->getCategoryList($categories->buildTree());
+        return $this->render('admin/_all_categories.html.twig',['categories'=>$categories,'editedCategory'=>$editedCategory]);
     }
 
 }
