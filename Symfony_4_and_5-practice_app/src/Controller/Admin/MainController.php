@@ -18,6 +18,8 @@ use App\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * @Route("/admin")
  */
@@ -26,7 +28,7 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="admin_main_page")
      */
-    public function index(Request $request, UserPasswordEncoderInterface $password_encoder)
+    public function index(Request $request, UserPasswordEncoderInterface $password_encoder, TranslatorInterface $translator)
     {
         $user = $this->getUser();
         $form = $this->createForm(UserType::class, $user,['user'=>$user]);
@@ -45,9 +47,11 @@ class MainController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $translated = $translator->trans('Your changes were saved!');
+
             $this->addFlash(
                     'success',
-                    'Your changes were saved!'
+                    $translated
                 );
             return $this->redirectToRoute('admin_main_page');
         }
