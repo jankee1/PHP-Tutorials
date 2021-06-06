@@ -51,7 +51,8 @@ class MainController extends AbstractController
 
             $this->addFlash(
                     'success',
-                    $translated
+                    'Your changes were saved!'
+                    // $translated
                 );
             return $this->redirectToRoute('admin_main_page');
         }

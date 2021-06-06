@@ -9,7 +9,7 @@
   {% endfor %}
 {% endfor %} #}
 
-<h2>My profile <small><a onclick="return confirm('Are you sure?');" href="{{path('delete_account')}}">delete account</a></small></h2>
+<h2>{% trans %} My profile {% endtrans %} <small><a onclick="return confirm('Are you sure?');" href="{{path('delete_account')}}">delete account</a></small></h2>
 
 
 {% if not is_granted('ROLE_ADMIN') and subscription and subscription.getPlan in subscription.getPlanDataNames %}
